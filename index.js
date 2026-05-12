@@ -18,15 +18,15 @@ app.use(compression()); // Gzip/Brotli compression
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 150, // Limit each IP to 150 requests per windowMs
-  standardHeaders: true, 
-  legacyHeaders: false, 
+  standardHeaders: true,
+  legacyHeaders: false,
   message: { error: "Too many requests, please try again later." }
 });
 app.use('/api', limiter); // Apply rate limiter to all API routes
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000'],
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
@@ -46,8 +46,8 @@ const approachRoutes = require('./routes/approachRoutes');
 
 // Health Check Route
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'OK', 
+  res.status(200).json({
+    status: 'OK',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });
