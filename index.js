@@ -8,6 +8,11 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 
+/** * 1. FIX RATE LIMIT ERROR 
+ * Penting karena aplikasi jalan di balik proxy (Nuansa Solution Infrastructure)
+ */
+app.set('trust proxy', 1);
+
 // Security & Performance Middlewares
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" } // Allow frontend to load images
@@ -34,7 +39,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static assets
-// Agar karakter spesial seperti spasi tertangani dengan baik di express.static
 app.use('/assets', express.static(path.join(__dirname, '../assets')));
 
 // Routes
@@ -59,7 +63,11 @@ app.use('/api/clients', clientRoutes);
 app.use('/api/business', businessRoutes);
 app.use('/api/approach', approachRoutes);
 
+/**
+ * 2. FIX PORT LOGIC
+ * Mengambil PORT dari .env (5005) atau default ke 5000
+ */
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
