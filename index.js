@@ -31,7 +31,7 @@ app.use('/api', limiter); // Apply rate limiter to all API routes
 
 // Middleware
 app.use(cors({
-  origin: '*',
+  origin: ['http://sanitaaksesnusantara.com', 'https://sanitaaksesnusantara.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
